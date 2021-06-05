@@ -7,10 +7,13 @@ int main(){
     int linha, coluna;
     int menor, maior;
 
-    scanf("%d", &matriz[5][5]);
+    for (linha = 0; linha < 5; linha++){
 
-    printf("%d", matriz[0][2]);
+        for (coluna = 0; coluna < 5; coluna++){
 
+            scanf("%d", &matriz[linha][coluna]);
+        }
+    }
 
     menor = matriz[0][0];
     maior = matriz[0][0];
@@ -19,17 +22,19 @@ int main(){
 
         for(coluna = 0; coluna < 5; coluna++){ //Percorrendo Coluna
 
-
             if (matriz[linha][coluna] <= menor){
 
                 menor = matriz[linha][coluna];
             }
-            else if (matriz[linha][coluna] >= maior){
+
+            if (matriz[linha][coluna] >= maior){
 
                 maior = matriz[linha][coluna];
             }
         }
     }
+
+    printf("%d %d", menor, maior);
 
     return 0;
     system("pause");
