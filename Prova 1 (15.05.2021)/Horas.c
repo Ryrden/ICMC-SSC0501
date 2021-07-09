@@ -1,11 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <locale.h>
+
+//Ryan Souza Sá Teles
+//nUSP: 12822062
+
 
 int main(){
-    setlocale(LC_ALL, "");
 
-    printf("\n\n");
+    return 0;
     system("pause");
- return;
 }
