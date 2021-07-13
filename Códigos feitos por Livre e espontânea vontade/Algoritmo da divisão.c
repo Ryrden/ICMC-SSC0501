@@ -4,9 +4,9 @@
 
 void caso1 (int a,int b, int *q, int *r){
 
-    *q = b / a;
+    *q = a / b;
 
-    *r = b % a;
+    *r = a % b;
 
 }
 
