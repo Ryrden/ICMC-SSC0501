@@ -7,5 +7,5 @@ int main(){
 
     printf("\n\n");
     system("pause");
- return;
+ return 0;
 }

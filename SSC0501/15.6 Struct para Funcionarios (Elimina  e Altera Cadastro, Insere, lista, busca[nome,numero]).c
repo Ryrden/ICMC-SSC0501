@@ -232,7 +232,7 @@ void LeDados(struct funcionarios *f){ //Realiza leitura dos dados do funcionário
     printf("\nDigite o nome do funcionario %d: ", cont);
     scanf("%[^\n]s", f->nome);
     fflush(stdin);
-    /*
+
     printf("\nDigite a idade do funcionario %d: ", cont);
     scanf("%d", &f->idade);
     fflush(stdin);
@@ -248,6 +248,6 @@ void LeDados(struct funcionarios *f){ //Realiza leitura dos dados do funcionário
     printf("\nDigite o número de telefone do funcionario %d: ", cont);
     scanf("%d", &f->telefone);
     fflush(stdin);
-    */
+
     cont++;
 }
