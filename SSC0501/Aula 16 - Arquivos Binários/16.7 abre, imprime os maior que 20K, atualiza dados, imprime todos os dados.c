@@ -39,21 +39,22 @@ int main(){
 
     fread(c,sizeof(struct automovel), 5, arq);
 
+    printf("Carros com preço maior que 20K: \n");
     for(int i=0;i<5;i++){
-        printf("%s %s %f \n", c[i].modelo, c[i].cor, c[i].preco);
+
+        if (c[i].preco > 20000){
+            printf("%s %s %f \n", c[i].modelo, c[i].cor, c[i].preco);
+        }
     }
 
     for(int i=0;i<5;i++){
         LeDados(c + i);
     }
+
     arq = fopen("16.5 Carros.txt", "w");
     fwrite(c, sizeof(struct automovel), 5, arq);
 
-    for(int i=0;i<5;i++){
-        printf("%s %s %f \n", c[i].modelo, c[i].cor, c[i].preco);
-    }
-
     printf("\n\n");
     system("pause");
- return 0;
+ return;
 }
