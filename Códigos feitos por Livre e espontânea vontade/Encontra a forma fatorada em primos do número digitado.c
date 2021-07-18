@@ -47,7 +47,7 @@ int main(){
     printf("Digite o numero que deseja ver Fatorado: ");
     scanf("%d", &valor);
 
-    cont = fatora_num(valor, &vet);
+    cont = fatora_num(valor, vet);
 
     printf("\nEste numero na forma fatorada tem a forma: \n\n");
 
@@ -57,6 +57,6 @@ int main(){
     }
 
     printf("\n\n");
-    return 0;
     system("pause");
+    return 0;
 }

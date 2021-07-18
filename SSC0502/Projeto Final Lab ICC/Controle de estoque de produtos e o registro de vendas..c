@@ -32,7 +32,7 @@ void EliminaCadastro();
 void RelatorioVendasT();
 void RelatorioVendasP();
 void RelatorioRanking();
-void FinalizaPrograma();
+void SalvarAlteracoes();
 void lb(); //Limpa Buffer
 
 //Variaveis globais para contagem após finalização do programa;
@@ -67,16 +67,31 @@ int main(){
             break;
 
         case 2: //Registrar vendas de um produto
+            if (cont_prod = -1){
+                printf("\nVocê não pode registrar uma venda sem cadastrar um produto antes!\n\n");
+                system("pause");
+                break;
+            }
             opt = BuscaProduto(p, cont_prod);
             if (opt == -1){break;}
             Registravendas(p, v, opt);
             break;
 
         case 3: //Listar produtos e vendas
+            if (cont_prod = -1){
+                printf("A lista está vazia! \nCadastre algum produto e sua respectiva venda antes.\n\n");
+                system("pause");
+                break;
+            }
             ListarProdutos(p, v, cont_prod+1);
             break;
 
         case 4: //Editar cadastro
+            if (cont_prod = -1){
+                printf("\nVocê não pode editar uma cadastro sem cadastrar um produto antes!\n\n");
+                system("pause");
+                break;
+            }
             printf("\nQual produto você deseja alterar os dados?\n");
             opt = BuscaProduto(p, cont_prod);
             if (opt == -1){break;}
@@ -87,6 +102,17 @@ int main(){
             break;
 
         case 5: //Eliminar cadastro
+            if (cont_prod = -1){
+                printf("\nVocê não pode eliminar um cadastro sem cadastrar um produto antes!\n\n");
+                system("pause");
+                break;
+            }
+            printf("\nQual produto você deseja eliminar do cadastro?\n");
+            opt = BuscaProduto(p, cont_prod);
+            if (opt == -1){break;}
+
+            EliminaCadastro(p, v, &cont_prod, opt, arq);
+            printf("Sucesso...");
             break;
 
         case 6: //Relatorio de vendas total
@@ -99,8 +125,8 @@ int main(){
             break;
 
         case 9: //fecha programa
-            arq = fopen("Base de dados.txt", "w");
-            FinalizaPrograma(arq ,p, v, &cont_prod);
+            SalvarAlteracoes(arq ,p, v, &cont_prod);
+            printf("\n\t\t\tObrigado por utilizar o programa \n\n\t\t\t\t  Saindo...\n");
             return 0;
             break;
 
@@ -127,15 +153,16 @@ void lb(){ //Limpa buffer
     }
 }
 
-void FinalizaPrograma(FILE *arq, struct produtos *p, struct vendas *v, int *cont_prod){ //Salva o arquivo em um documento txt
+void SalvarAlteracoes(FILE *arq, struct produtos *p, struct vendas *v, int *cont_prod){
 
+    arq = fopen("Base de dados.txt", "w");
     fseek(arq,0,SEEK_SET);
     fwrite(cont_prod, sizeof(int), 1, arq);
     fwrite(p, sizeof(struct produtos), (*cont_prod+1), arq);
     fwrite(v, sizeof(struct vendas), (*cont_prod+1), arq);
 
-    printf("\n\t\t\tObrigado por utilizar o programa \n\n\t\t\t\t  Saindo...\n");
-
+    printf("Salvando...");
+    sleep(1);
 }
 
 void menu(){ //Menu com opções
@@ -234,6 +261,38 @@ void Registravendas(struct produtos *p, struct vendas *v, int index){ //registra
     }
 }
 
+void EliminaCadastro(struct produtos *p, struct vendas *v, int *tam, int index, FILE *arq){
+
+    char res[2];
+
+    for(int cont = index; cont < *tam; cont++){
+
+        *p[cont].nome = *p[cont+1].nome;
+        p[cont].codigo = p[cont+1].codigo;
+        p[cont].preco = p[cont+1].preco;
+        p[cont].estoque = p[cont+1].estoque;
+        v[cont].quantidade = v[cont+1].quantidade;
+        v[cont].dia = v[cont+1].dia;
+        v[cont].mes = v[cont+1].mes;
+        v[cont].ano = v[cont+1].ano;
+    }
+
+    printf("\nDeseja salvar as alterações? s/n: ");
+    scanf("%[^\n]s", res);
+    if (res == 's'){
+        SalvarAlteracoes(arq ,p, v, &tam);
+    }
+    else{
+        printf("Saindo sem salvar...");
+        sleep(1);
+    }
+
+    (*tam)--;
+}
+
+void RelatorioRanking(struct produtos *p, struct vendas *v, int *tam){
+
+}
 
 void ListarProdutos(struct produtos *p, struct vendas *v, int tam){ //Lista produtos e quanto venderam até o momento
     int opt;
@@ -266,7 +325,6 @@ void ListarProdutos(struct produtos *p, struct vendas *v, int tam){ //Lista prod
     }
 
     system("pause");
-
 
 }
 
@@ -335,12 +393,11 @@ int BuscaProduto(struct produtos *p, int tam){ //retorna posição do vetor na qua
     scanf("%d", &cod);
     lb();
 
-    for(int i = 0; i < tam; i++){
-
-        if (cod == p[i+1].codigo){
-            return i+1;
+    for(int i = 0; i <= tam; i++){
+        if (cod == p[i].codigo){
+            return i;
         }
-        else{
+        else if (i == (tam)){
             printf("\nEsse produto não existe");
             sleep(2);
             return -1;

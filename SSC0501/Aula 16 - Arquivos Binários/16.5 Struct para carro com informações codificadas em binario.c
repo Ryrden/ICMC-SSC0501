@@ -53,6 +53,8 @@ int main(){
         printf("%s %s %f \n", c[i].modelo, c[i].cor, c[i].preco);
     }
 
+
+
     printf("\n\n");
     system("pause");
  return 0;

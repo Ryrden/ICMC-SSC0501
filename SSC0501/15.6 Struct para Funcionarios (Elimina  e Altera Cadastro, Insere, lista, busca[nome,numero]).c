@@ -86,7 +86,7 @@ void MENU(int tam, struct funcionarios *f){ //Menu com opções
             printf("Qual funcionário você deseja eliminar o cadastro?");
             i = BuscaFuncionario(tam, f);
             EliminaCadastro(i, tam, f);
-            tam--;
+
 
             printf("\nNovos dados dos funcionários: \n");
             ListaDados(tam, f);
