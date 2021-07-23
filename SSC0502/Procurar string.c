@@ -35,7 +35,7 @@ int ProcuraString(FILE *arq, char *palavra){
     while((c = fgetc(arq)) != EOF){
 
         if (palavra[0] == c){
-            fseek(arq, -1, SEEK_CUR);
+            fseek(arq, -1, SEEK_CUR); //volta uma caractere para o scanf ler a palavra toda
             fscanf(arq, "%s", palavra2);
 
             for(int i=0; i <strlen(palavra2);i++){

@@ -94,23 +94,23 @@ int main(){
     int *inverso, *inversoN;
     int maior;
 
-    printf("Considerando A = X (mod B) e que \no inverso de A é um número tal que Inverso*A = 1 (mod B)");
+    printf("Considerando A = X (mod B) e que \no inverso de A ï¿½ um nï¿½mero tal que Inverso*A = 1 (mod B)");
     printf("\nDigite o A: ");
     scanf("%d", &a);
 
     printf("\nDigite o B: ");
     scanf("%d", &b);
 
-    if (abs(b)>abs(a)){maior=abs(b);}else{maior=abs(a);} //Verifica qual dos números digitados é maior em módulo
+    if (abs(b)>abs(a)){maior=abs(b);}else{maior=abs(a);} //Verifica qual dos nï¿½meros digitados ï¿½ maior em mï¿½dulo
 
     inverso = alocaVetor(maior);
     inversoN = alocaVetorN(maior);
 
-    resto = resto_deAB(b,a); //foi dado invertido porque pelo o algoritmo da divisão e a congruência, inverte.
+    resto = resto_deAB(b,a); //foi dado invertido porque pelo o algoritmo da divisï¿½o e a congruï¿½ncia, inverte.
 
     if (MDC(a,b) != 1){
-        printf("\n%d não tem inverso módulo %d", a,b);
-        printf("\n\nO resto da divisão de B por A é: %d", resto);
+        printf("\n%d nï¿½o tem inverso mï¿½dulo %d", a,b);
+        printf("\n\nO resto da divisï¿½o de B por A ï¿½: %d", resto);
     }
     else{
 
@@ -135,13 +135,13 @@ int main(){
         }
         system("CLS");
         printf("A: %d B: %d\n", a, b);
-        printf("\nTemos as equações \n     %d*%d = 1 (mod %d) -Inverso via Testes com números positivos \n", inversoPositive,a,b);
-        printf("     %d*%d = 1 (mod %d) -Inverso via Testes com números negativos \n", inversoNegative,a,b);
+        printf("\nTemos as equaï¿½ï¿½es \n     %d*%d = 1 (mod %d) -Inverso via Testes com nï¿½meros positivos \n", inversoPositive,a,b);
+        printf("     %d*%d = 1 (mod %d) -Inverso via Testes com nï¿½meros negativos \n", inversoNegative,a,b);
         printf("     %d = %d (mod %d) \ncom os seguintes resultados: \n", a, resto, b);
-        printf("\nO inverso positvo de A módulo B é: %d", inversoPositive);
-        printf("\nO inverso negativo de A módulo B é: %d", inversoNegative);
-        printf("\nO resto da divisão de B por A é: %d", resto);
-        printf("\n\n\n\n     Coding by: Ryan S.\n");
+        printf("\nO inverso positvo de A mï¿½dulo B ï¿½: %d", inversoPositive);
+        printf("\nO inverso negativo de A mï¿½dulo B ï¿½: %d", inversoNegative);
+        printf("\nO resto da divisï¿½o de B por A ï¿½: %d", resto);
+        printf("\n\n\n\n     encoded by: Ryan S.\n");
     }
 
     printf("\n\n");
