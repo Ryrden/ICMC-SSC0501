@@ -1,16 +1,27 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <locale.h>
-#include <string.h>
 
 int main(){
-    setlocale(LC_ALL, "");
 
+    int jogos, soma;
+    int empatados=0,vitorias=0;
+    int aux;
 
+    scanf("%d %d", &jogos, &soma);
 
-    fclose(); //Apagar se necessário
-    free(); //Apagar se necessário
-    printf("\n\n");
-    system("pause");
+    if (soma % 3 == 0){
+        vitorias = jogos;
+    }
+    else{
+        aux = (int) (soma / 3)*3;
+        vitorias = (soma / 3);
+        while(aux != soma){
+            aux +=2;
+            empatados++;
+        }
+
+    }
+
+    printf("%d %d", empatados, vitorias);
     return 0;
 }
