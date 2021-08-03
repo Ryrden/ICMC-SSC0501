@@ -16,18 +16,13 @@ void isPrime(num){
         isPrime = 0;
 
         while (verificador <= primo){
-
-
             prime = primo % verificador;
 
             if (prime == 0){
-
                 isPrime++;
             }
             verificador++;
-
             }
-
             if (isPrime == 2){
                 printf("%d ", primo);
         }

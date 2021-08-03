@@ -38,11 +38,9 @@ int BuscaPalavraEmArquivo(char *palavra, FILE *arq){ // retorna 1 se encontrar e
     int pertence, cont;
 
     while((c = getc(arq)) != EOF){
-
         if (palavra[0] == c){
             cont = 0;
             pertence = 1;
-
             while((c = getc(arq)) != ' '){
 
                 cont++;

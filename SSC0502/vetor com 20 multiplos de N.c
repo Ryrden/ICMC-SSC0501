@@ -30,6 +30,7 @@ int main(){
     }
 
     free(multiplos);
-    return 0;
+    printf("\n\n");
     system("pause");
+    return 0;
 }

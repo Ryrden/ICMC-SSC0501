@@ -46,6 +46,7 @@ int main(){
 
     qnt_divisores(num, &vet);
 
-    return 0;
+    printf("\n\n");
     system("pause");
+    return 0;
 }

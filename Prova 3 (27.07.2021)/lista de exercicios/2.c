@@ -17,30 +17,32 @@ void Divide(struct aluno *a, struct aluno *aprovado, struct aluno *reprovado, in
     int cont1=0;
     int cont2=0;
 
-    for(int i=0;i<10;i++){
+    for(int i=0;i<3;i++){
         if (a[i].media >= 5){
             ap++;
         }
     }
 
-    n1=ap;
-    n2=(10-ap);
+    *n1=ap;
+    *n2=(3-ap);
 
-    aprovado = (struct aluno*) malloc(ap * sizeof(struct aluno));
-    reprovado = (struct aluno*) malloc((10-ap) * sizeof(struct aluno));
+    aprovado = (struct aluno*) calloc(*n1, sizeof(struct aluno));
+    reprovado = (struct aluno*) calloc(*n2, sizeof(struct aluno));
 
-    for(int i=0;i<10;i++){
+    for(int i=0;i<3;i++){
         if (a[i].media >= 5){
-            strcpy(aprovado[cont1].nome,a[i].nome);
+            *aprovado[cont1].nome = *a[i].nome;
+            printf("%s", aprovado[cont1].nome);
             aprovado[cont1].nUSP = a[i].nUSP;
             aprovado[cont1].media = a[i].media;
             cont1++;
         }
         else{
-            strcpy(reprovado[cont2].nome,a[i].nome);
+            *reprovado[cont2].nome = *a[i].nome;
             reprovado[cont2].nUSP = a[i].nUSP;
             reprovado[cont2].media = a[i].media;
             cont2++;
+            printf("\nReprovados: \n\t %s, %d, %f", reprovado[cont2].nome, reprovado[cont2].nUSP, reprovado[cont2].media);
         }
     }
 
@@ -49,33 +51,31 @@ void Divide(struct aluno *a, struct aluno *aprovado, struct aluno *reprovado, in
 int main(){
     setlocale(LC_ALL, "");
 
-    struct aluno a[10];
+    struct aluno a[3];
     struct aluno *aprovados;
     struct aluno *reprovados;
     int n1,n2;
 
-    for(int i=0;i<10;i++){
+    for(int i=0;i<3;i++){
 
-        scanf("%[^\n]s", &a[i].nome);
+        scanf("%[^\n]", a[i].nome);
         fflush(stdin);
         scanf("%d", &a[i].nUSP);
         fflush(stdin);
         scanf("%f", &a[i].media);
-        fflush(stdin);
         printf("PROX\n");
+        fflush(stdin);
     }
 
-    Divide(a,aprovados, reprovados, &n1,&n2);
+    Divide(a, aprovados, reprovados, &n1, &n2);
 
-    for(int i=0;i<n1;i++){
-        printf("Aprovado: \n\t%s, %d, %f\n", aprovados[i].nome, aprovados[i].nUSP, aprovados[i].media);
+    for(int i=0; i<n1; i++){
+        printf("Aprovados: \n\t %s, %d, %f\n", aprovados[i].nome, aprovados[i].nUSP, aprovados[i].media);
     }
 
-    for(int i=0;i<n1;i++){
-        printf("\nReprovados: \n\t%s, %d, %f", reprovados[i].nome, reprovados[i].nUSP, reprovados[i].media);
+    for(int i=0; i<n2; i++){
+        printf("\nReprovados: \n\t %s, %d, %f", reprovados[i].nome, reprovados[i].nUSP, reprovados[i].media);
     }
-
-
 
     free(aprovados);
     free(reprovados);
