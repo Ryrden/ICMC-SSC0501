@@ -35,6 +35,7 @@ int main(){
         fflush(stdin);
         media = (a[i].nota1+a[i].nota2)/2;
         soma += media;
+        
     }
 
     for(int i=0;i<10;i++){
@@ -47,7 +48,7 @@ int main(){
         fprintf(arq, "\n\nMEDIA TOTAL: %f", (float)soma/10);
 
 
-    fclose(arq); //Apagar se necessário
+    fclose(arq); //Apagar se necessï¿½rio
     printf("\n\n");
     system("pause");
     return 0;

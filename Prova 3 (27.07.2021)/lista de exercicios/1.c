@@ -9,7 +9,6 @@ void soma_vetor(int *vetor1,int *vetor2,int **vetor_res,int n){
 
     for(int i=0;i<n;i++){
         *(*vetor_res+i) = vetor1[i] + vetor2[i];
-        printf("%d- ", *(*vetor_res+i));
     }
 }
 
