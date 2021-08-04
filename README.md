@@ -6,12 +6,15 @@ Disciplina 2: Laboratório de introdução à Ciência da Computação I. -> Có
 *Conteúdo abordado:*
 
     -Lógica de programação
+    -Operadores relacionais; bit a bit
+    -Algebra booleana
+    -Funções
     -Laços condicionais
     -Laços de repetição
     -Vetores
     -Matrizes
     -Strings
-    -Alocação Dinâmica de memória
+    -Alocação Dinâmica
     -Ponteiros
     -Structs
     -Arquivos
