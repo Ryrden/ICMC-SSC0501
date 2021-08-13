@@ -1,36 +1,31 @@
+#include <locale.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <locale.h>
 
-int isPrime(int primo){
+int isPrime(int num) {
 
-    int primo_confirmado = 0, verificador;
+    if (num <= 1) {
+        return 0;
+    }
 
-    verificador = primo;
-
-    while (verificador > 0){ //Verificando se o valor atual é primo
-
-        if (primo % verificador == 0){
-
-            primo_confirmado++;
-            }
-
-        verificador = verificador - 1;
-
+    for (int i = 2; i < num; i++) {
+        if (num % i == 0) {
+            return 0;
         }
+    }
 
-    return (primo_confirmado);
+    return 1;
 }
 
-int fatora_num(int num, int *vet){
+int fatora_num(int num, int *vet) {
 
-    int cont=0;
+    int cont = 0;
 
-    for (int i = 2; i <= num; i++){
+    for (int i = 2; i <= num; i++) {
 
-        if (isPrime(i) == 2){
+        if (isPrime(i)) {
 
-            while(num % i == 0){
+            while (num % i == 0) {
 
                 num = num / i;
                 vet[cont] = i;
@@ -39,39 +34,36 @@ int fatora_num(int num, int *vet){
         }
     }
 
-    return(cont);
-
+    return (cont);
 }
 
-int main(){
+int main() {
     setlocale(LC_ALL, "");
 
     int valor;
     int resposta;
 
-    printf("Digite o número que deseja saber se é primo: ");
+    printf("Digite o nï¿½mero que deseja saber se ï¿½ primo: ");
     scanf("%d", &valor);
 
-    if (isPrime(valor) == 2){
+    if (isPrime(valor) == 2) {
 
-        printf("\nEsse número é primo");
-    }
-    else{
-        printf("\nEsse número não é primo");
+        printf("\nEsse nï¿½mero ï¿½ primo");
+    } else {
+        printf("\nEsse nï¿½mero nï¿½o ï¿½ primo");
     }
 
-    printf("\n\nDigite '1' para ver todos os primos até o número digitado e '0' caso o contrário: ");
+    printf("\n\nDigite '1' para ver todos os primos atï¿½ o nï¿½mero digitado e '0' caso o contrï¿½rio: ");
     scanf("%d", &resposta);
     system("CLS");
-    if (resposta == 1){
-        for (int i = 2; i <= valor; i++){
+    if (resposta == 1) {
+        for (int i = 2; i <= valor; i++) {
 
-            if (isPrime(i) == 2){
+            if (isPrime(i) == 2) {
                 printf("%d ", i);
-                }
             }
-    }
-    else{
+        }
+    } else {
         printf("Obrigado");
     }
 

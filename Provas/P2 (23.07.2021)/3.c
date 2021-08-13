@@ -1,14 +1,13 @@
+#include <locale.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <locale.h>
 #include <string.h>
 
-//Funciona mas no RunCodes está incompleto
+//Funciona mas no RunCodes estï¿½ incompleto
 
 int ContaPalavra();
 
-
-int main(){
+int main() {
     setlocale(LC_ALL, "");
 
     FILE *arq;
@@ -17,7 +16,7 @@ int main(){
     int vezes;
     char s[256];
 
-    if ((arq = fopen("texto.txt", "r+")) == NULL){
+    if ((arq = fopen("texto.txt", "r+")) == NULL) {
         printf("Erro de abertura");
         return 0;
     }
@@ -27,25 +26,21 @@ int main(){
     scanf("%[^\n]s", palavra2);
     fflush(stdin);
 
-    while(fscanf(arq,"%s",s) == 1){
+    while (fscanf(arq, "%s", s) == 1) {
 
         char r[256];
 
-        if (strcmp(s,palavra1) == 0){
-            fseek(arq,strlen(palavra1)-1,SEEK_CUR);
+        if (strcmp(s, palavra1) == 0) {
+            fseek(arq, strlen(palavra1) - 1, SEEK_CUR);
             fscanf(arq, "%s", r);
 
-            if (strcmp(r,palavra2) == 0){
+            if (strcmp(r, palavra2) == 0) {
                 vezes++;
+            } else {
+                fseek(arq, strlen(palavra2) - 1, SEEK_CUR);
             }
-            else{
-                fseek(arq,strlen(palavra2)-1,SEEK_CUR);
-            }
-
         }
-
     }
-
 
     printf("%d", vezes);
 
@@ -53,5 +48,3 @@ int main(){
     printf("\n\n");
     return 0;
 }
-
-

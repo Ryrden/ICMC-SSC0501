@@ -1,32 +1,30 @@
+#include <locale.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <locale.h>
 #include <string.h>
 
-/*INFORMAÇÕES:
-    NOME: Ryan Souza Sá Teles
+/*INFORMAÃ‡Ã•ES:
+    NOME: Ryan Souza SÃ¡ Teles
     nUSP: 12822062
     Turma: BSI [021]
-    Instituto: Instituto de Ciências Matemáticas e de Computação
-    Disciplina: Introdução a Ciência da Computação I
+    Instituto: Instituto de CiÃªncias MatemÃ¡ticas e de ComputaÃ§Ã£o
+    Disciplina: IntroduÃ§Ã£o a CiÃªncia da ComputaÃ§Ã£o I
     Professor: Dennis Wolf
-
 */
 
-struct produtos{
+struct produtos {
 
     char nome[256];
     int codigo;
     float preco;
     int estoque;
-
 };
 
-struct vendas{
+struct vendas {
 
-    //int codigo; esta variável não está sendo utilizada porque o código dela é o mesmo do produto,
+    //int codigo; esta variÃ¡vel nÃ£o estÃ¡ sendo utilizada porque o cÃ³digo dela Ã© o mesmo do produto.
     int quantidade;
-    char data[11][10]; // formato: DD/MM/AAAA; limite: 10 vendas por item, a ultima sobrepõe
+    char data[11][10]; // formato: DD/MM/AAAA; limite: 10 vendas por item, a ultima sobrepÃµe
 };
 
 int BuscaProduto();
@@ -46,11 +44,11 @@ void RelatorioRanking();
 void SalvarAlteracoes();
 void lb(); //Limpa Buffer
 
-//Variaveis globais para contagem após finalização do programa;
+//Variaveis globais para contagem apÃ³s finalizando do programa;
 int cont_prod = -1;
 
-int main(){
-    setlocale(LC_ALL, "");
+int main() {
+    setlocale(LC_ALL, "portuguese");
 
     FILE *arq;
     struct produtos p[1000];
@@ -58,7 +56,7 @@ int main(){
     int opt;
     char res[11];
 
-    if ((arq = fopen("Base de dados.txt", "ab+")) == NULL){
+    if ((arq = fopen("Base de dados.txt", "ab+")) == NULL) {
 
         printf("\nErro na abertura de arquivo!\n");
         return 0;
@@ -68,25 +66,27 @@ int main(){
     fread(&p, sizeof(struct produtos), (1000), arq);
     fread(&v, sizeof(struct vendas), (1000), arq);
 
-    do{
+    do {
         menu();
         scanf("%d", &opt);
         lb();
 
-        switch(opt){
+        switch (opt) {
 
         case 1: //Cadastrar produtos
             CadastraProduto(p);
             break;
 
         case 2: //Registrar vendas de um produto
-            if (cont_prod == -1){
-                printf("\nVocê não pode registrar uma venda sem cadastrar um produto antes!\n\n");
+            if (cont_prod == -1) {
+                printf("\nVocÃª nÃ£o pode registrar uma venda sem cadastrar um produto antes!\n\n");
                 system("pause");
                 break;
             }
             opt = BuscaProduto(p, cont_prod);
-            if (opt == -1){break;}
+            if (opt == -1) {
+                break;
+            }
             system("CLS");
             printf("Dados do Produto: ");
             ListaTodosDados(opt, p, v);
@@ -94,26 +94,26 @@ int main(){
             break;
 
         case 3: //Listar produtos e vendas
-            if (cont_prod == -1){
-                printf("A lista está vazia! \nCadastre algum produto e sua respectiva venda antes.\n\n");
+            if (cont_prod == -1) {
+                printf("A lista estï¿½ vazia! \nCadastre algum produto e sua respectiva venda antes.\n\n");
                 system("pause");
                 break;
-            }
-            else{
-                ListarProdutos(p, v, cont_prod+1);
+            } else {
+                ListarProdutos(p, v, cont_prod + 1);
                 break;
             }
 
         case 4: //Editar cadastro
-            if (cont_prod == -1){
-                printf("\nVocê não pode editar uma cadastro sem cadastrar um produto antes!\n\n");
+            if (cont_prod == -1) {
+                printf("\nVocï¿½ nï¿½o pode editar uma cadastro sem cadastrar um produto antes!\n\n");
                 system("pause");
                 break;
-            }
-            else{
-                printf("\nQual produto você deseja alterar os dados?\n");
+            } else {
+                printf("\nQual produto vocï¿½ deseja alterar os dados?\n");
                 opt = BuscaProduto(p, cont_prod);
-                if (opt == -1){break;}
+                if (opt == -1) {
+                    break;
+                }
 
                 EditaCadastro(p, v, opt);
                 printf("Novos dados do produto: \n\n");
@@ -123,73 +123,75 @@ int main(){
             }
 
         case 5: //Eliminar cadastro
-            if (cont_prod == -1){
-                printf("\nVocê não pode eliminar um cadastro sem cadastrar um produto antes!\n\n");
+            if (cont_prod == -1) {
+                printf("\nVocï¿½ nï¿½o pode eliminar um cadastro sem cadastrar um produto antes!\n\n");
                 system("pause");
                 break;
-            }else{
-                printf("\nQual produto você deseja eliminar do cadastro?\n");
+            } else {
+                printf("\nQual produto vocï¿½ deseja eliminar do cadastro?\n");
                 opt = BuscaProduto(p, cont_prod);
-                if (opt == -1){break;}
+                if (opt == -1) {
+                    break;
+                }
 
                 EliminaCadastro(p, v, &cont_prod, opt);
-                printf("\nSucesso...Salve e Feche o programa para que as alterações sejam feitas\n");
+                printf("\nSucesso...Salve e Feche o programa para que as alteraï¿½ï¿½es sejam feitas\n");
                 sleep(2);
                 system("pause");
                 break;
             }
 
         case 6: //Relatorio de vendas total
-            if (cont_prod == -1){
-                printf("\nVocê não pode gerar um relatório das vendas sem o cadastrar ao menos um produto antes!\n\n");
+            if (cont_prod == -1) {
+                printf("\nVocï¿½ nï¿½o pode gerar um relatï¿½rio das vendas sem o cadastrar ao menos um produto antes!\n\n");
                 system("pause");
                 break;
-            }
-            else{
+            } else {
 
                 RelatorioVendasT(p, v, cont_prod);
                 break;
             }
 
         case 7: //relatorio de vendas de um determinado produto
-            if (cont_prod == -1){
-                printf("\nVocê não pode gerar um relatório de vendas de um produto sem o cadastrar antes!\n\n");
+            if (cont_prod == -1) {
+                printf("\nVocï¿½ nï¿½o pode gerar um relatï¿½rio de vendas de um produto sem o cadastrar antes!\n\n");
                 system("pause");
                 break;
-            }
-            else{
-                printf("\nQual produto você deseja gerar um relatório?\n");
+            } else {
+                printf("\nQual produto vocï¿½ deseja gerar um relatï¿½rio?\n");
                 opt = BuscaProduto(p, cont_prod);
-                if (opt == -1){break;}
+                if (opt == -1) {
+                    break;
+                }
 
                 RelatorioVendasP(p, v, cont_prod, opt);
                 break;
             }
 
         case 8: //ranking do produto mais vendido
-            if (cont_prod <= 0){
-                printf("\nVocê não pode gerar um relatório de ranking dos produto mais vendidos sem ter cadastrado ao menos DOIS produtos antes!\n\n");
+            if (cont_prod <= 0) {
+                printf("\nVocï¿½ nï¿½o pode gerar um relatï¿½rio de ranking dos produto mais vendidos sem ter cadastrado ao menos DOIS produtos antes!\n\n");
                 system("pause");
                 break;
-            }
-            else{
+            } else {
                 RelatorioRanking(p, v, cont_prod);
                 return 0;
                 break;
             }
 
-        case 9: //Relatório de Vendas no Mês especifico
-            if (cont_prod == -1){
-                printf("\nVocê não pode gerar um relatório de vendas no mês sem ter cadastrado ao menos dois produtos antes!\n\n");
+        case 9: //Relatï¿½rio de Vendas no Mï¿½s especifico
+            if (cont_prod == -1) {
+                printf("\nVocï¿½ nï¿½o pode gerar um relatï¿½rio de vendas no mï¿½s sem ter cadastrado ao menos dois produtos antes!\n\n");
                 system("pause");
                 break;
-            }
-            else{
-                printf("Digite o número do mês e o ano no formato: \nMês  -> MM\n\t\tDigite: ");
+            } else {
+                printf("Digite o nï¿½mero do mï¿½s e o ano no formato: \nMï¿½s  -> MM\n\t\tDigite: ");
                 scanf("%[^\n]s", res);
                 lb();
                 opt = BuscaMes(v, cont_prod, res);
-                if (opt == -1){break;}
+                if (opt == -1) {
+                    break;
+                }
 
                 RelatorioVendasM(p, v, cont_prod, res);
                 break;
@@ -197,19 +199,18 @@ int main(){
 
         case 10: //fecha programa
             arq = fopen("Base de dados.txt", "wb+");
-            SalvarAlteracoes(arq , p, v, &cont_prod);
+            SalvarAlteracoes(arq, p, v, &cont_prod);
             printf("\n\t\t\tObrigado por utilizar o programa \n\n\t\t\t\t  Saindo...\n");
             return 0;
             break;
 
         default:
-            printf("\nOpção inválida \n\n");
+            printf("\nOpï¿½ï¿½o invï¿½lida \n\n");
             system("pause");
             break;
-
         }
 
-    }while(opt != 9);
+    } while (opt != 9);
 
     fclose(arq);
     printf("\n\n");
@@ -217,17 +218,16 @@ int main(){
     return 0;
 }
 
-void lb(){ //Limpa buffer
-
+void lb() { //Limpa buffer
     char c;
-    while((c = getchar()) != '\n' && c != EOF){
+    while ((c = getchar()) != '\n' && c != EOF) {
         printf("Pressione Enter\n");
     }
 }
 
-void SalvarAlteracoes(FILE *arq, struct produtos *p, struct vendas *v, int *cont_prod){ //Salvar alterações
+void SalvarAlteracoes(FILE *arq, struct produtos *p, struct vendas *v, int *cont_prod) { //Salvar alteraï¿½ï¿½es
 
-    fseek(arq,0,SEEK_SET);
+    fseek(arq, 0, SEEK_SET);
     fwrite(cont_prod, sizeof(int), 1, arq);
     fwrite(p, sizeof(struct produtos), (1000), arq);
     fwrite(v, sizeof(struct vendas), (1000), arq);
@@ -236,89 +236,89 @@ void SalvarAlteracoes(FILE *arq, struct produtos *p, struct vendas *v, int *cont
     sleep(1);
 }
 
-void menu(){ //Menu com opções
-
+void menu() { //Menu com opÃ§Ãµes
     system("CLS");
+    system("clear");
     printf("=-=-=-=-=-=-=-=-=-=CONTROLE DE ESTOQUE PRODUTOS E REGISTRO DE VENDAS=-=-=-=-=-=-=-=-=-=");
-    printf("\n\nDigite o número que tem respeito a opção desejada:\n\n");
+    printf("\n\nDigite o nÃºmero que tem respeito a opÃ§Ã£o desejada:\n\n");
     printf("1: Cadastrar um ou mais produtos\n");
     printf("2: Registrar vendas de um produto(*)\n");
     printf("3: Listar todos os produtos\n");
     printf("4: Editar cadastro ou registro de venda de um produto(*)\n");
     printf("5: Eliminar cadastro de um produto(*)\n");
-    printf("6: Gerar Relatório de vendas total\n");
-    printf("7: Gerar Relatório de vendas de um determinado produto(*)\n");
-    printf("8: Gerar Relatório de ranking de produtos mais vendidos[FPAE](*)\n");
-    printf("9: Gerar Relatório de vendas de um determinado mês\n");
-    printf("10: Salvar Alterações e Sair do programa\n\n");
-    printf("\t\t\t[FPAE]: Após a execução, finaliza o programa SEM SALVAR alterações feitas antes (CUIDADO)\n");
-    printf("\t\t\t   (*): Necessário o código do produto \n");
+    printf("6: Gerar RelatÃ³rio de vendas total\n");
+    printf("7: Gerar RelatÃ³rio de vendas de um determinado produto(*)\n");
+    printf("8: Gerar RelatÃ³rio de ranking de produtos mais vendidos[FPAE](*)\n");
+    printf("9: Gerar RelatÃ³rio de vendas de um determinado mï¿½s\n");
+    printf("10: Salvar AlteraÃ§Ãµes e Sair do programa\n\n");
+    printf("\t\t\t[FPAE]: ApÃ³s a execuÃ§Ã£o, finaliza o programa SEM SALVAR alteraÃ§Ãµes feitas antes (CUIDADO)\n");
+    printf("\t\t\t   (*): NecessÃ¡rio o cÃ³digo do produto \n");
     printf("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
     printf("\n\n       Digite: ");
 }
 
-void ListaTodosDados(int opt, struct produtos *p, struct vendas *v){ //Lista nome, código, preço, estoque, vendas e data da venda
+void ListaTodosDados(int opt, struct produtos *p, struct vendas *v) { //Lista nome, cï¿½digo, preï¿½o, estoque, vendas e data da venda
 
-    printf("\nProduto [%d]\n", opt+1);
-    printf("Nome: %s \nCódigo: %d \nPreço: R$ %.2f", p[opt].nome, p[opt].codigo, p[opt].preco);
+    printf("\nProduto [%d]\n", opt + 1);
+    printf("Nome: %s \nCï¿½digo: %d \nPreï¿½o: R$ %.2f", p[opt].nome, p[opt].codigo, p[opt].preco);
     printf("\nEstoque: %d\n\n", p[opt].estoque);
     int i = 9;
-    while (v[opt].data[i][3] != '0' || v[opt].data[i][3] != '1'){
+    while (v[opt].data[i][3] != '0' || v[opt].data[i][3] != '1') {
         i--;
-        if ( i == 0){
+        if (i == 0) {
             break;
         }
     }
     printf("\nVendas totais: %d \nData: %s \n\n", v[opt].quantidade, v[opt].data[i]);
 }
 
-void CadastraProduto(struct produtos *p){ //cadastra nome, código, preço e estoque de um ou mais produtos
+void CadastraProduto(struct produtos *p) { //cadastra nome, cï¿½digo, preï¿½o e estoque de um ou mais produtos
 
     system("CLS");
     int tam;
     int j;
 
-    printf("Quantos produtos você deseja cadastrar?: ");
+    printf("Quantos produtos vocï¿½ deseja cadastrar?: ");
     scanf("%d", &tam);
     lb();
 
-    for(int i=0; i < tam;i++){
+    for (int i = 0; i < tam; i++) {
         system("CLS");
 
         cont_prod++;
-        printf("Produtos cadastrados: %d/%d\n", i+1, tam);
+        printf("Produtos cadastrados: %d/%d\n", i + 1, tam);
 
-        printf("\nNome do produto %d: ", cont_prod+1);
+        printf("\nNome do produto %d: ", cont_prod + 1);
         scanf("%[^\n]s", p[cont_prod].nome);
         lb();
 
-        printf("\nCódigo do produto %d (número): ", cont_prod+1);
+        printf("\nCï¿½digo do produto %d (nï¿½mero): ", cont_prod + 1);
         scanf("%d", &p[cont_prod].codigo);
         lb();
-        for(j = 0; j < cont_prod; j++){
-            while(p[j].codigo == p[cont_prod].codigo || p[cont_prod].codigo < 0){
-                printf("\nEsse código já foi cadastrado antes ou é inválido");
+        for (j = 0; j < cont_prod; j++) {
+            while (p[j].codigo == p[cont_prod].codigo || p[cont_prod].codigo < 0) {
+                printf("\nEsse cï¿½digo jï¿½ foi cadastrado antes ou ï¿½ invï¿½lido");
                 printf("\ndigite novamente: ");
                 scanf("%d", &p[cont_prod].codigo);
                 lb();
             }
         }
 
-        printf("\nPreço do produto %d: R$ ", cont_prod+1);
+        printf("\nPreï¿½o do produto %d: R$ ", cont_prod + 1);
         scanf("%f", &p[cont_prod].preco);
         lb();
-        while(p[cont_prod].preco < 0){
-            printf("\nEsse preço não é válido");
+        while (p[cont_prod].preco < 0) {
+            printf("\nEsse preï¿½o nï¿½o ï¿½ vï¿½lido");
             printf("\ndigite novamente: ");
             scanf("%f", &p[cont_prod].preco);
             lb();
         }
 
-        printf("\nEstoque do produto %d: ", cont_prod+1);
+        printf("\nEstoque do produto %d: ", cont_prod + 1);
         scanf("%d", &p[cont_prod].estoque);
         lb();
-        while(p[cont_prod].estoque < 0){
-            printf("\nEstoque inválido");
+        while (p[cont_prod].estoque < 0) {
+            printf("\nEstoque invï¿½lido");
             printf("\ndigite novamente: ");
             scanf("%d", &p[cont_prod].estoque);
             lb();
@@ -326,16 +326,16 @@ void CadastraProduto(struct produtos *p){ //cadastra nome, código, preço e estoq
     }
 }
 
-void Registravendas(struct produtos *p, struct vendas *v, int index){ //registra quantidade e data de venda
+void Registravendas(struct produtos *p, struct vendas *v, int index) { //registra quantidade e data de venda
 
     int aux, i;
 
-    if (p[index].estoque > 0){
+    if (p[index].estoque > 0) {
         printf("\n Digite quantos itens do produto %s foram vendidos: ", p[index].nome);
         scanf("%d", &aux);
         lb();
-        while (aux < 0 || (p[index].estoque - aux < 0)){
-            printf("\nVocê não pode estar devendo vendas ou ter vendido mais do que o há no estoque: %d", p[index].estoque);
+        while (aux < 0 || (p[index].estoque - aux < 0)) {
+            printf("\nVocï¿½ nï¿½o pode estar devendo vendas ou ter vendido mais do que o hï¿½ no estoque: %d", p[index].estoque);
             printf("\nDigite novamente: ");
             scanf("%d", &aux);
             lb();
@@ -343,47 +343,44 @@ void Registravendas(struct produtos *p, struct vendas *v, int index){ //registra
         v[index].quantidade = v[index].quantidade + aux;
 
         p[index].estoque -= aux;
-        printf("O estoque deste produto agora é: %d", p[index].estoque);
+        printf("O estoque deste produto agora ï¿½: %d", p[index].estoque);
 
-        i=9;
-        while (v[index].data[i][3] != '0' || v[index].data[i][3] != '1'){
+        i = 9;
+        while (v[index].data[i][3] != '0' || v[index].data[i][3] != '1') {
             i--;
-            if (i==0){
+            if (i == 0) {
                 break;
             }
         }
-        printf("\n\nDigite a data da venda nesse formato: \nDia Mês Ano -> DD/MM/AAAA\n\t\tDigite: ");
+        printf("\n\nDigite a data da venda nesse formato: \nDia Mï¿½s Ano -> DD/MM/AAAA\n\t\tDigite: ");
         scanf("%[^\n]s", v[index].data[i]);
         lb();
         printf("\n\n");
-
-    }
-    else{
-        printf("\nnão é possível registrar a venda deste produto porque ele não tem estoque!");
+    } else {
+        printf("\nnï¿½o ï¿½ possï¿½vel registrar a venda deste produto porque ele nï¿½o tem estoque!");
         printf("\nedite o cadastro dele antes\n");
         sleep(3);
         system("pause");
     }
 }
 
-void EliminaCadastro(struct produtos *p, struct vendas *v, int *tam, int index){ //Elimina cadastro de um produto
+void EliminaCadastro(struct produtos *p, struct vendas *v, int *tam, int index) { //Elimina cadastro de um produto
 
-    for(int cont = index; cont <= *tam; cont++){
+    for (int cont = index; cont <= *tam; cont++) {
 
-        *p[cont].nome = *p[cont+1].nome;
-        p[cont].codigo = p[cont+1].codigo;
-        p[cont].preco = p[cont+1].preco;
-        p[cont].estoque = p[cont+1].estoque;
-        v[cont].quantidade = v[cont+1].quantidade;
-        for(int j=0;j<10;j++){
-            *v[cont].data[j] = *v[cont+1].data[j];
+        *p[cont].nome = *p[cont + 1].nome;
+        p[cont].codigo = p[cont + 1].codigo;
+        p[cont].preco = p[cont + 1].preco;
+        p[cont].estoque = p[cont + 1].estoque;
+        v[cont].quantidade = v[cont + 1].quantidade;
+        for (int j = 0; j < 10; j++) {
+            *v[cont].data[j] = *v[cont + 1].data[j];
         }
     }
     (*tam)--;
-
 }
 
-void RelatorioRanking(struct produtos *p, struct vendas *v, int tam){ //Gera Relatório e Finaliza o programa para não alterar a ordem de inserção dos produtos e vendas
+void RelatorioRanking(struct produtos *p, struct vendas *v, int tam) { //Gera Relatï¿½rio e Finaliza o programa para nï¿½o alterar a ordem de inserï¿½ï¿½o dos produtos e vendas
     system("CLS");
 
     FILE *relat;
@@ -391,16 +388,16 @@ void RelatorioRanking(struct produtos *p, struct vendas *v, int tam){ //Gera Rel
     char res[3];
     char aux1[256];
 
-    for (i = 0; i < tam; i++){
-        for(int k = i+1; k <= tam; k++){
+    for (i = 0; i < tam; i++) {
+        for (int k = i + 1; k <= tam; k++) {
 
-            if (v[i].quantidade < v[k].quantidade){
+            if (v[i].quantidade < v[k].quantidade) {
 
                 aux = v[i].quantidade;
                 v[i].quantidade = v[k].quantidade;
                 v[k].quantidade = aux;
 
-                strcpy(aux1,p[i].nome);
+                strcpy(aux1, p[i].nome);
                 strcpy(p[i].nome, p[k].nome);
                 strcpy(p[k].nome, aux1);
 
@@ -415,40 +412,37 @@ void RelatorioRanking(struct produtos *p, struct vendas *v, int tam){ //Gera Rel
         }
     }
     printf("Ranking dos Produtos mais vendidos:\n\n");
-    for(i = 0;i <= tam;i++){
-        printf("\n%dº Lugar: \n", i+1);
-        printf("  - PRODUTO: %s - VENDAS: %d - CÓDIGO: %d - LUCRO: %.2f\n", p[i].nome, v[i].quantidade, p[i].codigo, ((float)(v[i].quantidade) * (p[i].preco)));
+    for (i = 0; i <= tam; i++) {
+        printf("\n%dï¿½ Lugar: \n", i + 1);
+        printf("  - PRODUTO: %s - VENDAS: %d - Cï¿½DIGO: %d - LUCRO: %.2f\n", p[i].nome, v[i].quantidade, p[i].codigo, ((float)(v[i].quantidade) * (p[i].preco)));
     }
 
     lb();
-    printf("\nAVISO: (Após a resposta, o programa será finalizado para a execução correta da função)");
-    printf("\nDeseja criar um arquivo .txt do relatório na pasta original do programa? s/n: ");
+    printf("\nAVISO: (Apï¿½s a resposta, o programa serï¿½ finalizado para a execuï¿½ï¿½o correta da funï¿½ï¿½o)");
+    printf("\nDeseja criar um arquivo .txt do relatï¿½rio na pasta original do programa? s/n: ");
     scanf("%[^\n]s", res);
     lb();
 
-    if (strcmp(res,"s") == 0){
-        if ((relat = fopen("RelatórioRanking.txt", "w+")) == NULL){
-            printf("\nErro na criação do arquivo!\n");
+    if (strcmp(res, "s") == 0) {
+        if ((relat = fopen("Relatï¿½rioRanking.txt", "w+")) == NULL) {
+            printf("\nErro na criaï¿½ï¿½o do arquivo!\n");
             system("pause");
         }
-        for(i = 0;i <= tam;i++){
-            fprintf(relat, "%dº Lugar: \n", i+1);
-            fprintf(relat, "  - PRODUTO: %s - VENDAS: %d - CÓDIGO: %d - LUCRO: %.2f\n\n", p[i].nome, v[i].quantidade, p[i].codigo, ((float)(v[i].quantidade) * (p[i].preco)));
+        for (i = 0; i <= tam; i++) {
+            fprintf(relat, "%dï¿½ Lugar: \n", i + 1);
+            fprintf(relat, "  - PRODUTO: %s - VENDAS: %d - Cï¿½DIGO: %d - LUCRO: %.2f\n\n", p[i].nome, v[i].quantidade, p[i].codigo, ((float)(v[i].quantidade) * (p[i].preco)));
         }
-        printf("\n\nProcessando o relatório...");
+        printf("\n\nProcessando o relatï¿½rio...");
         sleep(1);
         printf("\n\t\t\tObrigado por utilizar o programa \n\n\t\t\t\t  Saindo...\n");
         sleep(3);
-    }
-    else{
+    } else {
         printf("\n\t\t\tObrigado por utilizar o programa \n\n\t\t\t\t  Saindo...\n");
         sleep(3);
     }
-
-
 }
 
-void RelatorioVendasP(struct produtos *p, struct vendas *v, int tam, int index){ //Gera Relatório de vendas do produto
+void RelatorioVendasP(struct produtos *p, struct vendas *v, int tam, int index) { //Gera Relatï¿½rio de vendas do produto
     system("CLS");
 
     char res[3];
@@ -456,209 +450,208 @@ void RelatorioVendasP(struct produtos *p, struct vendas *v, int tam, int index){
     int k;
 
     k = 9;
-    while (v[index].data[k][3] != '0' && v[index].data[k][3] != '1'){
+    while (v[index].data[k][3] != '0' && v[index].data[k][3] != '1') {
         k--;
-        if (k==0){
+        if (k == 0) {
             break;
         }
     }
 
-    printf("Relatório de Vendas: \n\nDados que serão gerados:\n");
+    printf("Relatï¿½rio de Vendas: \n\nDados que serï¿½o gerados:\n");
 
-    printf("\nProduto [%d]\n", index+1);
-    printf("Nome: %s \nCódigo: %d \nPreço: R$ %.2f", p[index].nome, p[index].codigo, p[index].preco);
-    printf("\nEstoque atual: %d\nLucro: R$ %.2f \n\n", p[index].estoque, ((float)(v[index].quantidade) * (p[index].preco)) );
-    printf("\nQuantidade de vendas: %d \nData do último registro: %s \n\n", v[index].quantidade, v[index].data[k]);
+    printf("\nProduto [%d]\n", index + 1);
+    printf("Nome: %s \nCï¿½digo: %d \nPreï¿½o: R$ %.2f", p[index].nome, p[index].codigo, p[index].preco);
+    printf("\nEstoque atual: %d\nLucro: R$ %.2f \n\n", p[index].estoque, ((float)(v[index].quantidade) * (p[index].preco)));
+    printf("\nQuantidade de vendas: %d \nData do ï¿½ltimo registro: %s \n\n", v[index].quantidade, v[index].data[k]);
 
-    printf("\nDeseja criar um arquivo .txt do relatório do produto na pasta original do programa? s/n: ");
+    printf("\nDeseja criar um arquivo .txt do relatï¿½rio do produto na pasta original do programa? s/n: ");
     scanf("%[^\n]s", res);
     lb();
 
-    if (strcmp(res,"s") == 0){
-        char nome[256] = {"RelatórioProduto - "};
+    if (strcmp(res, "s") == 0) {
+        char nome[256] = {"Relatï¿½rioProduto - "};
         strcat(nome, p[index].nome);
         strcat(nome, ".txt");
-        if ((relat = fopen(nome, "w+")) == NULL){
-            printf("\nErro na criação do arquivo!\n");
+        if ((relat = fopen(nome, "w+")) == NULL) {
+            printf("\nErro na criaï¿½ï¿½o do arquivo!\n");
             system("pause");
         }
 
-        fprintf(relat, "Produto [%d]\n", index+1);
-        fprintf(relat, "Nome: %s \nCódigo: %d \nPreço: R$ %.2f", p[index].nome, p[index].codigo, p[index].preco);
-        fprintf(relat, "\nEstoque atual: %d\nLucro: %.2f \n\n", p[index].estoque, ((float)(v[index].quantidade) * (p[index].preco)) );
-        fprintf(relat, "\nQuantidade de vendas: %d \nData do último registro: %s \n\n", v[index].quantidade, v[index].data[k]);
+        fprintf(relat, "Produto [%d]\n", index + 1);
+        fprintf(relat, "Nome: %s \nCï¿½digo: %d \nPreï¿½o: R$ %.2f", p[index].nome, p[index].codigo, p[index].preco);
+        fprintf(relat, "\nEstoque atual: %d\nLucro: %.2f \n\n", p[index].estoque, ((float)(v[index].quantidade) * (p[index].preco)));
+        fprintf(relat, "\nQuantidade de vendas: %d \nData do ï¿½ltimo registro: %s \n\n", v[index].quantidade, v[index].data[k]);
 
-        printf("\n\nProcessando o relatório...");
+        printf("\n\nProcessando o relatï¿½rio...");
         sleep(2);
-        printf("\n\t\t\tSucesso!\n\nAVISO: (Encerre o programa pelo menu para a conclusão do processo)");
+        printf("\n\t\t\tSucesso!\n\nAVISO: (Encerre o programa pelo menu para a conclusï¿½o do processo)");
         sleep(4);
     }
 }
 
-void RelatorioVendasT(struct produtos *p, struct vendas *v, int tam){ //Gera um Relatório txt das vendas
+void RelatorioVendasT(struct produtos *p, struct vendas *v, int tam) { //Gera um Relatï¿½rio txt das vendas
     system("CLS");
 
     FILE *relat;
     char res[3];
-    int i,k;
-    int vendaT=0;
-    float lucroT=0;
+    int i, k;
+    int vendaT = 0;
+    float lucroT = 0;
 
+    printf("Relatï¿½rio de Vendas Totais: \n\n[NOME, CODIGO] de pelo menos 1 e no mï¿½ximo 10 dos ï¿½ltimos \nprodutos cadastrados que estarï¿½o do relatï¿½rio:\n\n\t");
 
-    printf("Relatório de Vendas Totais: \n\n[NOME, CODIGO] de pelo menos 1 e no máximo 10 dos últimos \nprodutos cadastrados que estarão do relatório:\n\n\t");
-
-    for(i=tam;i>=(tam-10);i--){
-        printf("[%s, %d] ",p[i].nome, p[i].codigo);
-        if (i == 0){
+    for (i = tam; i >= (tam - 10); i--) {
+        printf("[%s, %d] ", p[i].nome, p[i].codigo);
+        if (i == 0) {
             break;
         }
     }
     lb();
-    printf("\n\nConfirmar a criação do arquivo: RelatórioVendasTotais.txt na pasta original do programa? s/n: ");
+    printf("\n\nConfirmar a criaï¿½ï¿½o do arquivo: Relatï¿½rioVendasTotais.txt na pasta original do programa? s/n: ");
     scanf("%[^\n]s", res);
     lb();
 
-    if (strcmp(res,"s") == 0){
+    if (strcmp(res, "s") == 0) {
 
-        if ((relat = fopen("RelatórioVendasTotais.txt", "w+")) == NULL){
-            printf("\nErro na criação do arquivo!\n");
+        if ((relat = fopen("Relatï¿½rioVendasTotais.txt", "w+")) == NULL) {
+            printf("\nErro na criaï¿½ï¿½o do arquivo!\n");
             system("pause");
         }
 
-        for(i=0;i<=tam;i++){ //Loop p/ descobrir a venda e lucro total
+        for (i = 0; i <= tam; i++) { //Loop p/ descobrir a venda e lucro total
             vendaT += v[i].quantidade;
             lucroT += (float)(v[i].quantidade) * (p[i].preco);
         }
-        fprintf(relat,"RESUMO:\n   Vendas total: %d itens\n   Lucro total: R$ %.2f\n\n", vendaT, lucroT);
+        fprintf(relat, "RESUMO:\n   Vendas total: %d itens\n   Lucro total: R$ %.2f\n\n", vendaT, lucroT);
 
-        for(i=0;i<=tam;i++){
-            k=9;
-            while (v[i].data[k][3] != '0' && v[i].data[k][3] != '1'){
+        for (i = 0; i <= tam; i++) {
+            k = 9;
+            while (v[i].data[k][3] != '0' && v[i].data[k][3] != '1') {
                 k--;
-                if (k==0){
+                if (k == 0) {
                     break;
                 }
             }
 
-            fprintf(relat, "Produto [%d]\n", i+1);
-            fprintf(relat, "   Nome: %s \n   Código: %d \n   Preço: R$ %.2f", p[i].nome, p[i].codigo, p[i].preco);
-            fprintf(relat, "\n   Estoque atual: %d\n   Lucro: R$ %.2f", p[i].estoque, ((float)(v[i].quantidade) * (p[i].preco)) );
-            fprintf(relat, "\n   Quantidade de vendas: %d \n   Data do último registro: %s \n\n", v[i].quantidade, v[i].data[k]);
+            fprintf(relat, "Produto [%d]\n", i + 1);
+            fprintf(relat, "   Nome: %s \n   Cï¿½digo: %d \n   Preï¿½o: R$ %.2f", p[i].nome, p[i].codigo, p[i].preco);
+            fprintf(relat, "\n   Estoque atual: %d\n   Lucro: R$ %.2f", p[i].estoque, ((float)(v[i].quantidade) * (p[i].preco)));
+            fprintf(relat, "\n   Quantidade de vendas: %d \n   Data do ï¿½ltimo registro: %s \n\n", v[i].quantidade, v[i].data[k]);
         }
 
-        printf("\n\nProcessando o relatório...");
+        printf("\n\nProcessando o relatï¿½rio...");
         sleep(2);
-        printf("\n\t\t\tSucesso!\n\nAVISO: (Encerre o programa pelo menu para a conclusão do processo)");
+        printf("\n\t\t\tSucesso!\n\nAVISO: (Encerre o programa pelo menu para a conclusï¿½o do processo)");
         sleep(4);
     }
-
 }
 
-void RelatorioVendasM(struct produtos *p, struct vendas *v, int tam, char mes[11]){ //Gera um Relatório txt de vendas de um determinado mês do ano
+void RelatorioVendasM(struct produtos *p, struct vendas *v, int tam, char mes[11]) { //Gera um Relatï¿½rio txt de vendas de um determinado mï¿½s do ano
 
     system("CLS");
 
     FILE *relat;
     char res[3];
-    int i,j,k;
-    int vendaT=0;
-    float lucroT=0;
+    int i, j, k;
+    int vendaT = 0;
+    float lucroT = 0;
 
-    printf("Relatório de Vendas do mês %s: \n\n[NOME, CODIGO] de pelo menos 1 e no máximo 10 dos últimos \nprodutos cadastrados no mês que estarão do relatório:\n\n\t", mes);
+    printf("Relatï¿½rio de Vendas do mï¿½s %s: \n\n[NOME, CODIGO] de pelo menos 1 e no mï¿½ximo 10 dos ï¿½ltimos \nprodutos cadastrados no mï¿½s que estarï¿½o do relatï¿½rio:\n\n\t", mes);
 
-    for(i=tam;i>=0;i--){
-        for(j=10;j>=0;j--){
-            if (mes[0] == v[i].data[j][3] && mes[1] == v[i].data[j][4]){
-            printf("[%s, %d] ",p[i].nome, p[i].codigo);
-
+    for (i = tam; i >= 0; i--) {
+        for (j = 10; j >= 0; j--) {
+            if (mes[0] == v[i].data[j][3] && mes[1] == v[i].data[j][4]) {
+                printf("[%s, %d] ", p[i].nome, p[i].codigo);
             }
         }
     }
 
-    printf("\n\nConfirmar a criação do arquivo: RelatórioVendasMes.txt na pasta original do programa? s/n: ");
+    printf("\n\nConfirmar a criaï¿½ï¿½o do arquivo: Relatï¿½rioVendasMes.txt na pasta original do programa? s/n: ");
     scanf("%[^\n]s", res);
     lb();
 
-    if (strcmp(res,"s") == 0){
+    if (strcmp(res, "s") == 0) {
 
-        if ((relat = fopen("RelatórioVendaMes.txt", "w+")) == NULL){
-            printf("\nErro na criação do arquivo!\n");
+        if ((relat = fopen("Relatï¿½rioVendaMes.txt", "w+")) == NULL) {
+            printf("\nErro na criaï¿½ï¿½o do arquivo!\n");
             system("pause");
         }
-        for(i=0;i<=tam;i++){for(int j=0; j <10;j++){if (mes[0] == v[i].data[j][3] && mes[1] == v[i].data[j][4]){ //Loop p/ descobrir a venda e lucro total
-            k=9;
-            while (v[i].data[k][3] != '0' && v[i].data[k][3] != '1'){
-                k--;
-                if (k==0){
-                    break;
-            }}
-            vendaT += v[i].quantidade;
-            lucroT += (float)(v[i].quantidade) * (p[i].preco);
-        }}}
-        fprintf(relat,"RESUMO DO MÊS %s:\n   Vendas total: %d itens\n   Lucro total: R$ %.2f\n\n",mes, vendaT, lucroT);
-
-        for(i=0;i<=tam;i++){
-            for(int j=0; j <10;j++){
-                if (mes[0] == v[i].data[j][3] && mes[1] == v[i].data[j][4]){
-
-                    k=9;
-                    while (v[i].data[k][3] != '0' && v[i].data[k][3] != '1'){
+        for (i = 0; i <= tam; i++) {
+            for (int j = 0; j < 10; j++) {
+                if (mes[0] == v[i].data[j][3] && mes[1] == v[i].data[j][4]) { //Loop p/ descobrir a venda e lucro total
+                    k = 9;
+                    while (v[i].data[k][3] != '0' && v[i].data[k][3] != '1') {
                         k--;
-                        if (k==0){
+                        if (k == 0) {
+                            break;
+                        }
+                    }
+                    vendaT += v[i].quantidade;
+                    lucroT += (float)(v[i].quantidade) * (p[i].preco);
+                }
+            }
+        }
+        fprintf(relat, "RESUMO DO Mï¿½S %s:\n   Vendas total: %d itens\n   Lucro total: R$ %.2f\n\n", mes, vendaT, lucroT);
+
+        for (i = 0; i <= tam; i++) {
+            for (int j = 0; j < 10; j++) {
+                if (mes[0] == v[i].data[j][3] && mes[1] == v[i].data[j][4]) {
+
+                    k = 9;
+                    while (v[i].data[k][3] != '0' && v[i].data[k][3] != '1') {
+                        k--;
+                        if (k == 0) {
                             break;
                         }
                     }
 
-                    fprintf(relat, "Produto [%d]\n", i+1);
-                    fprintf(relat, "   Nome: %s \n   Código: %d \n   Preço: R$ %.2f", p[i].nome, p[i].codigo, p[i].preco);
-                    fprintf(relat, "\n   Estoque atual: %d\n   Lucro: R$ %.2f", p[i].estoque, ((float)(v[i].quantidade) * (p[i].preco)) );
-                    fprintf(relat, "\n   Quantidade de vendas: %d \n   Data do último registro: %s \n\n", v[i].quantidade, v[i].data[k]);
+                    fprintf(relat, "Produto [%d]\n", i + 1);
+                    fprintf(relat, "   Nome: %s \n   Cï¿½digo: %d \n   Preï¿½o: R$ %.2f", p[i].nome, p[i].codigo, p[i].preco);
+                    fprintf(relat, "\n   Estoque atual: %d\n   Lucro: R$ %.2f", p[i].estoque, ((float)(v[i].quantidade) * (p[i].preco)));
+                    fprintf(relat, "\n   Quantidade de vendas: %d \n   Data do ï¿½ltimo registro: %s \n\n", v[i].quantidade, v[i].data[k]);
                     break;
                 }
             }
         }
 
-        printf("\n\nProcessando o relatório...");
+        printf("\n\nProcessando o relatï¿½rio...");
         sleep(2);
-        printf("\n\t\t\tSucesso!\n\nAVISO: (Encerre o programa pelo menu para a conclusão do processo)");
+        printf("\n\t\t\tSucesso!\n\nAVISO: (Encerre o programa pelo menu para a conclusï¿½o do processo)");
         sleep(4);
     }
-
 }
 
-void ListarProdutos(struct produtos *p, struct vendas *v, int tam){ //Lista produtos e quanto venderam até o momento
+void ListarProdutos(struct produtos *p, struct vendas *v, int tam) { //Lista produtos e quanto venderam atï¿½ o momento
     int opt;
     system("CLS");
 
     int i;
 
-    printf("\nDigite o número do produto que deseja ver mais\n");
+    printf("\nDigite o nï¿½mero do produto que deseja ver mais\n");
 
-    for(i=0; i < tam; i++){
+    for (i = 0; i < tam; i++) {
 
-        printf("\nProduto [%d]\n", (i+1));
-        printf("Nome: %s -- Código: %d\n", p[i].nome, p[i].codigo);
+        printf("\nProduto [%d]\n", (i + 1));
+        printf("Nome: %s -- Cï¿½digo: %d\n", p[i].nome, p[i].codigo);
     }
-
 
     printf("\n\nDigite: ");
     scanf("%d", &opt);
 
-    while(opt < 0 || opt > tam){
-        printf("\nproduto não existe!!\n");
+    while (opt < 0 || opt > tam) {
+        printf("\nproduto nï¿½o existe!!\n");
         printf("Digite novamente: ");
         scanf("%d", &opt);
-
     }
     printf("\nProduto [%d]\n", opt);
     opt--;
-    printf("Nome: %s \nCódigo: %d \nPreço: R$ %.2f", p[opt].nome, p[opt].codigo, p[opt].preco);
+    printf("Nome: %s \nCï¿½digo: %d \nPreï¿½o: R$ %.2f", p[opt].nome, p[opt].codigo, p[opt].preco);
     printf("\nEstoque: %d\n\n", p[opt].estoque);
-    if (v[opt].quantidade > 0){
-        i=9;
-        while (v[opt].data[i][3] != '0' && v[opt].data[i][3] != '1'){
+    if (v[opt].quantidade > 0) {
+        i = 9;
+        while (v[opt].data[i][3] != '0' && v[opt].data[i][3] != '1') {
             i--;
-            if(i==0){
+            if (i == 0) {
                 break;
             }
         }
@@ -666,123 +659,121 @@ void ListarProdutos(struct produtos *p, struct vendas *v, int tam){ //Lista prod
     }
 
     system("pause");
-
 }
 
-void EditaCadastro(struct produtos *p, struct vendas *v, int index){ //Edita cadastro e ou venda do produto
+void EditaCadastro(struct produtos *p, struct vendas *v, int index) { //Edita cadastro e ou venda do produto
     system("CLS");
     int opt;
     int aux;
     int i;
 
-    do{
-        printf("Digite o número correspondente ao dado que deseja alterar do Produto %s:\n\n", p[index].nome);
-        printf("1: NOME -- 2: CÓDIGO -- 3: PREÇO -- 4: ESTOQUE -- 5: Nº DE VENDAS -- 6: DATA -- 7: SAIR DA EDIÇÃO\n\n       Digite: ");
+    do {
+        printf("Digite o nï¿½mero correspondente ao dado que deseja alterar do Produto %s:\n\n", p[index].nome);
+        printf("1: NOME -- 2: Cï¿½DIGO -- 3: PREï¿½O -- 4: ESTOQUE -- 5: Nï¿½ DE VENDAS -- 6: DATA -- 7: SAIR DA EDIï¿½ï¿½O\n\n       Digite: ");
         scanf("%d", &opt);
         lb();
 
-        switch(opt){
-            case 1:
-                printf("Nome atual cadastrado: %s - \nDigite o nome do produto: ", p[index].nome);
-                scanf("%[^\n]s", p[index].nome);
-                lb();
-                break;
+        switch (opt) {
+        case 1:
+            printf("Nome atual cadastrado: %s - \nDigite o nome do produto: ", p[index].nome);
+            scanf("%[^\n]s", p[index].nome);
+            lb();
+            break;
 
-            case 2:
-                printf("\nCódigo atual cadastrado: %d - \nDigite o código do produto: ", p[index].codigo);
-                scanf("%d", &p[index].codigo);
-                lb();
-                for(int j = 0; j < cont_prod; j++){
-                    if (p[j].codigo == p[index].codigo){
-                        while (p[j].codigo == p[index].codigo){
-                            printf("\nEsse código já foi cadastrado antes, pertence ao produto %s", p[j].nome);
-                            printf("\nCaso deseje alterar assim mesmo, é necessário alterar o código do produto  %s primeiro", p[j].nome);
-                            printf("\ndigite qual codigo deseja manter: ");
-                            scanf("%d", &p[index].codigo);
-                            lb();
-                        }
+        case 2:
+            printf("\nCï¿½digo atual cadastrado: %d - \nDigite o cï¿½digo do produto: ", p[index].codigo);
+            scanf("%d", &p[index].codigo);
+            lb();
+            for (int j = 0; j < cont_prod; j++) {
+                if (p[j].codigo == p[index].codigo) {
+                    while (p[j].codigo == p[index].codigo) {
+                        printf("\nEsse cï¿½digo jï¿½ foi cadastrado antes, pertence ao produto %s", p[j].nome);
+                        printf("\nCaso deseje alterar assim mesmo, ï¿½ necessï¿½rio alterar o cï¿½digo do produto  %s primeiro", p[j].nome);
+                        printf("\ndigite qual codigo deseja manter: ");
+                        scanf("%d", &p[index].codigo);
+                        lb();
                     }
                 }
-                break;
+            }
+            break;
 
-            case 3:
-                printf("\nPreço atual cadastrado: %.2f - \nDigite o preço do produto: ", p[index].preco);
-                scanf("%f", &p[index].preco);
+        case 3:
+            printf("\nPreï¿½o atual cadastrado: %.2f - \nDigite o preï¿½o do produto: ", p[index].preco);
+            scanf("%f", &p[index].preco);
+            lb();
+            while (p[cont_prod].preco < 0) {
+                printf("\nEsse preï¿½o nï¿½o ï¿½ vï¿½lido");
+                printf("\ndigite novamente: ");
+                scanf("%f", &p[cont_prod].preco);
                 lb();
-                while(p[cont_prod].preco < 0){
-                    printf("\nEsse preço não é válido");
-                    printf("\ndigite novamente: ");
-                    scanf("%f", &p[cont_prod].preco);
-                    lb();
-                }
-                break;
+            }
+            break;
 
-            case 4:
-                printf("\nEstoque atual cadastrado: %d - \nDigite o estoque do produto: ", p[index].estoque);
-                scanf("%d", &p[index].estoque);
+        case 4:
+            printf("\nEstoque atual cadastrado: %d - \nDigite o estoque do produto: ", p[index].estoque);
+            scanf("%d", &p[index].estoque);
+            lb();
+            while (p[cont_prod].estoque < 0) {
+                printf("\nEstoque invalido");
+                printf("\ndigite novamente: ");
+                scanf("%d", &p[cont_prod].estoque);
                 lb();
-                while(p[cont_prod].estoque < 0){
-                    printf("\nEstoque invalido");
-                    printf("\ndigite novamente: ");
-                    scanf("%d", &p[cont_prod].estoque);
-                    lb();
-                }
-                break;
+            }
+            break;
 
-            case 5:
-                printf("\nNº de vendas atual registrado: %d - \nDigite o número de vendas a MAIS(+) ou a MENOS(-) do produto registrado anteriormente:", v[index].quantidade);
-                printf("\n[EX:(+) 5 de 20 vendas = 15 vendas ; (-) -5 de 20 vendas = 25 vendas]");
+        case 5:
+            printf("\nNï¿½ de vendas atual registrado: %d - \nDigite o nï¿½mero de vendas a MAIS(+) ou a MENOS(-) do produto registrado anteriormente:", v[index].quantidade);
+            printf("\n[EX:(+) 5 de 20 vendas = 15 vendas ; (-) -5 de 20 vendas = 25 vendas]");
+            scanf("%d", &aux);
+            lb();
+            while (p[index].estoque - aux < 0) {
+                printf("\nVocï¿½ nï¿½o pode estar devendo vendas ou ter vendido mais do que o hï¿½ no estoque: %d", p[index].estoque);
+                printf("\nDigite novamente: ");
                 scanf("%d", &aux);
                 lb();
-                while (p[index].estoque - aux < 0){
-                    printf("\nVocê não pode estar devendo vendas ou ter vendido mais do que o há no estoque: %d", p[index].estoque);
-                    printf("\nDigite novamente: ");
-                    scanf("%d", &aux);
-                    lb();
+            }
+            v[index].quantidade = v[index].quantidade - aux;
+            p[index].estoque += aux;
+            printf("\n\nO estoque deste produto agora ï¿½: %d\n", p[index].estoque);
+            break;
+
+        case 6:
+            i = 9;
+            while (v[index].data[i][3] != '0' && v[index].data[i][3] != '1') {
+                i--;
+                if (i == 0) {
+                    break;
                 }
-                v[index].quantidade = v[index].quantidade - aux;
-                p[index].estoque += aux;
-                printf("\n\nO estoque deste produto agora é: %d\n", p[index].estoque);
-                break;
+            }
 
-            case 6:
-                i=9;
-                while (v[index].data[i][3] != '0' && v[index].data[i][3] != '1'){
-                    i--;
-                    if (i==0){
-                        break;
-                    }
-                }
+            printf("\nData atual registrada: %s - \nDigite a data da venda do produto no formato: DD/MM/AAAA\n\t\tDigite: ", v[index].data[i]);
+            scanf("%[^\n]s", v[index].data[i]);
+            lb();
+            break;
 
-                printf("\nData atual registrada: %s - \nDigite a data da venda do produto no formato: DD/MM/AAAA\n\t\tDigite: ", v[index].data[i]);
-                scanf("%[^\n]s", v[index].data[i]);
-                lb();
-                break;
+        case 7:
+            break;
 
-            case 7:
-                break;
-
-            default:
-                printf("opção inválida, digite novamente");
-                sleep(1);
-                break;
+        default:
+            printf("opï¿½ï¿½o invï¿½lida, digite novamente");
+            sleep(1);
+            break;
         }
-    }while(opt != 7);
+    } while (opt != 7);
 }
 
-int BuscaProduto(struct produtos *p, int tam){ //retorna posição do vetor na qual o produto está
+int BuscaProduto(struct produtos *p, int tam) { //retorna posiï¿½ï¿½o do vetor na qual o produto estï¿½
 
-    int cod,i;
-    printf("Digite o código do produto: ");
+    int cod, i;
+    printf("Digite o cï¿½digo do produto: ");
     scanf("%d", &cod);
     lb();
 
-    for(i = 0; i <= tam; i++){
-        if (cod == p[i].codigo){
+    for (i = 0; i <= tam; i++) {
+        if (cod == p[i].codigo) {
             return i;
-        }
-        else if (i == (tam)){
-            printf("\nEsse produto não existe");
+        } else if (i == (tam)) {
+            printf("\nEsse produto nï¿½o existe");
             sleep(2);
             break;
         }
@@ -790,18 +781,18 @@ int BuscaProduto(struct produtos *p, int tam){ //retorna posição do vetor na qua
     return -1;
 }
 
-int BuscaMes(struct vendas *v, int tam, char mes[11]){ //retorna 1 se o mês buscado foi registrado
+int BuscaMes(struct vendas *v, int tam, char mes[11]) { //retorna 1 se o mï¿½s buscado foi registrado
 
-    for(int i = 0; i <= tam; i++){
-        for(int j=0; j <10;j++){
+    for (int i = 0; i <= tam; i++) {
+        for (int j = 0; j < 10; j++) {
 
-            if (mes[0] == v[i].data[j][3] && mes[1] == v[i].data[j][4]){
+            if (mes[0] == v[i].data[j][3] && mes[1] == v[i].data[j][4]) {
                 return 1;
                 break;
             }
         }
     }
-    printf("\nNenhuma venda foi registrada nesse mês\n");
+    printf("\nNenhuma venda foi registrada nesse mï¿½s\n");
     system("pause");
     return -1;
 }

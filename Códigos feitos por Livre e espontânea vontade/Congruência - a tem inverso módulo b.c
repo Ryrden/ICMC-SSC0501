@@ -77,6 +77,10 @@ int verifica_primo(int numero){
     int isPrime = 0;
     int cont = 1;
 
+    if (numero <= 1) {
+        return 0;
+    }
+
     while (cont <= numero){
 
         if (numero % cont == 0){
@@ -101,7 +105,8 @@ int main(){
     printf("\nDigite o B: ");
     scanf("%d", &b);
 
-    if (abs(b)>abs(a)){maior=abs(b);}else{maior=abs(a);} //Verifica qual dos n�meros digitados � maior em m�dulo
+    maior = abs(b) > abs(a) ? maior=abs(b); : maior=abs(a); //Verifica qual dos n�meros digitados � maior em m�dulo
+    //if (abs(b)>abs(a)){maior=abs(b);}else{maior=abs(a);}
 
     inverso = alocaVetor(maior);
     inversoN = alocaVetorN(maior);
