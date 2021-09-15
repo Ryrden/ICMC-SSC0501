@@ -1,51 +1,49 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <locale.h>
 #include <string.h>
 
-struct aluno{
+typedef struct {
 
     char nome[30];
     float nota1;
     float nota2;
 
-};
+} aluno;
 
-int main(){
-    setlocale(LC_ALL, "");
+int main() {
 
     FILE *arq;
     char str[20];
-    int i=0;
-    struct aluno a[10];
+    char final[50];
+    int i = 0;
+    aluno a[11];
 
-    if((arq=fopen("arquivo.txt", "r")) == NULL){
+    if ((arq = fopen("arquivo.txt", "r")) == NULL) {
         printf("\nErro de abertura");
         exit(0);
     }
-    fseek(arq,0,SEEK_SET);
-    while(!feof(arq)){
 
-
-        fgets(a[i].nome,30,arq);
-        printf("%s ", a[i].nome);
-        fgets(a[i].nota1,1,arq);
-
-        fseek(arq,2,SEEK_CUR);
-        fscanf(arq, "%f", a[i].nota1);
-        printf("%f ", a[i].nota1);
-        fscanf(arq, "%f", a[i].nota2);
+    while (!feof(arq)) { //NAO FUNCIONA
+        fscanf(arq, "%s", a[i].nome);
+        fscanf(arq, "%f", &a[i].nota1);
+        fscanf(arq, "%f", &a[i].nota2);
         i++;
     }
+    /*char temp[256];
+    while (feof(arq) != EOF) { //FUNCIONA
+        fscanf(arq,"%s", temp);
+        strcpy(a[i].nome,temp);
+        fscanf(arq,"%s", temp);
+        a[i].nota1 = atof(temp);
+        fscanf(arq,"%s", temp);
+        a[i].nota2 = atof(temp);
 
-    for(int i=0;i<10;i++){
-        printf("%s ", a[i].nome);
-        printf("%f ", a[i].nota1);
-        printf("%f \n", a[i].nota2);
+        i++;
+    }*/
+    for (int i = 0; i < 11; i++) { //NÃƒO PRINTA NADA!
+        printf("%s %f %f \n", a[i].nome, a[i].nota1, a[i].nota2);
     }
 
-    fclose(arq); //Apagar se necessário
-    printf("\n\n");
-    system("pause");
+    fclose(arq);
     return 0;
 }

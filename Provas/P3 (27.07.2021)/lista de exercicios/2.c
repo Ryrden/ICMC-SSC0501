@@ -1,17 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <locale.h>
 #include <string.h>
 
-struct aluno{
+typedef struct {
 
     char nome[265];
     int nUSP;
     float media;
 
-};
+} aluno;
 
-void Divide(struct aluno *a, struct aluno *aprovado, struct aluno *reprovado, int *n1, int *n2){
+void Divide(aluno *a, aluno *aprovado, aluno *reprovado, int *n1, int *n2){
 
     int ap;
     int cont1=0;
@@ -26,8 +25,8 @@ void Divide(struct aluno *a, struct aluno *aprovado, struct aluno *reprovado, in
     *n1=ap;
     *n2=(3-ap);
 
-    aprovado = (struct aluno*) calloc(*n1, sizeof(struct aluno));
-    reprovado = (struct aluno*) calloc(*n2, sizeof(struct aluno));
+    aprovado = (aluno*) calloc(*n1, sizeof(aluno));
+    reprovado = (aluno*) calloc(*n2, sizeof(aluno));
 
     for(int i=0;i<3;i++){
         if (a[i].media >= 5){
@@ -49,11 +48,10 @@ void Divide(struct aluno *a, struct aluno *aprovado, struct aluno *reprovado, in
 }
 
 int main(){
-    setlocale(LC_ALL, "");
 
-    struct aluno a[3];
-    struct aluno *aprovados;
-    struct aluno *reprovados;
+    aluno a[3];
+    aluno *aprovados;
+    aluno *reprovados;
     int n1,n2;
 
     for(int i=0;i<3;i++){

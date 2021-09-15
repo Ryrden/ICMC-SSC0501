@@ -1,55 +1,46 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <locale.h>
 #include <string.h>
 
-struct aluno{
+typedef struct {
 
     char nome[30];
     float nota1;
     float nota2;
 
-};
+} aluno;
 
-int main(){
-    setlocale(LC_ALL, "");
+int main() {
 
     FILE *arq;
-    float soma=0;
-    float media=0;
+    float soma = 0;
+    float media = 0;
 
-    if((arq=fopen("arquivo.txt", "w+")) == NULL){
+    if ((arq = fopen("arquivo.txt", "w+")) == NULL) {
         printf("\nErro de abertura");
-        exit(0);
+        exit(EXIT_FAILURE);
     }
 
-    struct aluno a[10];
+    aluno a[10];
 
-    for(int i=0;i<10;i++){
+    for (int i = 0; i < 10; i++) {
 
-        scanf("%[^\n]", a[i].nome);
-        fflush(stdin);
+        fgets(a[i].nome, 30, stdin);
+        a[i].nome[strlen(a[i].nome) - 1] = '\0';
         scanf("%f", &a[i].nota1);
-        fflush(stdin);
         scanf("%f", &a[i].nota2);
-        fflush(stdin);
-        media = (a[i].nota1+a[i].nota2)/2;
+        setbuf(stdin,NULL);
+
+        media = (a[i].nota1 + a[i].nota2) / 2;
         soma += media;
-        
     }
 
-    for(int i=0;i<10;i++){
-
-        fprintf(arq, "%s ", a[i].nome);
-        fprintf(arq, "%f ", a[i].nota1);
-        fprintf(arq, "%f \n", a[i].nota2);
+    for (int i = 0; i < 10; i++) {
+        fprintf(arq, "%s %f %f \n", a[i].nome, a[i].nota1, a[i].nota2);
     }
 
-        fprintf(arq, "\n\nMEDIA TOTAL: %f", (float)soma/10);
-
+    fprintf(arq, "MT: %f 0", (float)soma / 10);
 
     fclose(arq); //Apagar se necess�rio
-    printf("\n\n");
-    system("pause");
     return 0;
 }
